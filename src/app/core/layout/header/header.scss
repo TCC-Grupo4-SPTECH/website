@@ -1,0 +1,18 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+
+  &__logo {
+    font-family: var(--avidata-font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--avidata-text);
+    text-decoration: none;
+  }
+
+  &__login {
+    color: var(--avidata-text);
+  }
+}

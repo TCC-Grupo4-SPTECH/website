@@ -1,0 +1,50 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+:root {
+  // AVIDATA brand palette (extracted from Figma screens)
+  --avidata-bg: #0b120f;
+  --avidata-panel-bg: #211c0e;
+  --avidata-panel-bg-active: #2b2410;
+  --avidata-accent: #c8890c;
+  --avidata-accent-light: #e0a020;
+  --avidata-accent-contrast: #171204;
+  --avidata-text: #f4efe3;
+  --avidata-text-muted: #8c8a76;
+
+  --avidata-font-display: 'Playfair Display', 'Georgia', serif;
+}
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        theme-type: dark,
+        primary: mat.$orange-palette,
+        tertiary: mat.$green-palette,
+      ),
+      typography: 'Playfair Display',
+      density: 0,
+    )
+  );
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: dark;
+
+  background-color: var(--avidata-bg);
+  color: var(--avidata-text);
+  font-family: var(--avidata-font-display);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
