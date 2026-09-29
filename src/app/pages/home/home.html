@@ -25,7 +25,7 @@
       <h1 class="review-card__title">Envie seu avistamento</h1>
 
       <div class="review-card__image">
-        <img [src]="previewUrl()" alt="Foto enviada do avistamento" />
+        <img [src]="processedImageUrl() ?? previewUrl()" alt="Foto enviada do avistamento" />
 
         @if (stage() === 'result' && detection(); as result) {
           <div class="review-card__banner" [class.review-card__banner--error]="!result.recognized">

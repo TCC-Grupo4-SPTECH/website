@@ -18,6 +18,7 @@ export class Home implements OnDestroy {
   protected readonly isDraggingOver = signal(false);
   protected readonly stage = signal<Stage>('upload');
   protected readonly previewUrl = signal<string | null>(null);
+  protected readonly processedImageUrl = signal<string | null>(null);
   protected readonly detection = signal<DetectionResult | null>(null);
   protected readonly isSubmitting = signal(false);
   protected readonly submitted = signal(false);
@@ -83,6 +84,7 @@ export class Home implements OnDestroy {
   protected reset(): void {
     this.revokePreview();
     this.selectedFile = null;
+    this.processedImageUrl.set(null);
     this.detection.set(null);
     this.submitted.set(false);
     this.sightingForm.reset();
@@ -96,13 +98,26 @@ export class Home implements OnDestroy {
     this.revokePreview();
     this.selectedFile = file;
     this.previewUrl.set(URL.createObjectURL(file));
+    this.processedImageUrl.set(null);
     this.detection.set(null);
     this.stage.set('detecting');
 
-    this.detectionService.detect(file).then((result) => {
-      this.detection.set(result);
-      this.stage.set('result');
-    });
+    this.detectionService
+      .detect(file)
+      .then((result) => {
+        this.detection.set(result);
+        this.processedImageUrl.set(result.processedImageUrl);
+        this.stage.set('result');
+      })
+      .catch((error) => {
+        console.error(error);
+        this.detection.set({
+          recognized: false,
+          label: 'Não foi possível processar a imagem no momento.',
+          processedImageUrl: null,
+        });
+        this.stage.set('result');
+      });
   }
 
   private revokePreview(): void {
