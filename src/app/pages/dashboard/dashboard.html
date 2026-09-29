@@ -1,0 +1,87 @@
+<section class="dashboard" aria-labelledby="dashboard-title">
+  <div class="dashboard__heading">
+    <div>
+      <p class="dashboard__eyebrow">MONITORAMENTO DE ESPÉCIES</p>
+      <h1 id="dashboard-title">Painel da arara-azul</h1>
+      <p class="dashboard__intro">Acompanhe os registros e os impactos ambientais nos territórios monitorados.</p>
+    </div>
+
+  </div>
+
+  <div class="dashboard__overview">
+    <article class="map-card">
+      <div class="card-heading">
+        <div>
+          <p class="card-heading__label">Registros no território</p>
+        </div>
+        <div class="map-card__legend" aria-label="Legenda do mapa">
+          <span><i class="legend-dot legend-dot--macaw"></i>Araras detectadas</span>
+          <span><i class="legend-dot legend-dot--alert"></i>Desmatamento</span>
+        </div>
+      </div>
+      <p class="map-card__loading" aria-live="polite">
+        @if (isLoadingSightings()) {
+          Carregando registros de araras…
+        } @else {
+          {{ loadedSightings() }} registros de araras
+        }
+        <span aria-hidden="true"> · </span>
+        @if (isLoadingDeforestation()) {
+          Carregando desmatamento da API…
+        } @else if (deforestationLoadFailed()) {
+          Desmatamento indisponível
+        } @else {
+          {{ formatNumber(loadedDeforestationAreas()) }} áreas de desmatamento
+        }
+      </p>
+      <div class="map-container">
+        <div #mapElement class="map" aria-label="Mapa interativo com pontos de avistamento de araras-azuis"></div>
+        @if (isLoadingDeforestation()) {
+          <div class="map-loading" role="status" aria-live="polite">
+            <span class="map-loading__spinner" aria-hidden="true"></span>
+            <strong>Carregando áreas desmatadas</strong>
+            <small>Buscando e preparando a camada do mapa…</small>
+          </div>
+        } @else if (deforestationLoadFailed()) {
+          <div class="map-loading map-loading--error" role="alert">
+            <strong>Não foi possível carregar o desmatamento</strong>
+            <button type="button" (click)="retryDeforestation()">Tentar novamente</button>
+          </div>
+        }
+      </div>
+    </article>
+
+    <div class="kpis">
+      @if (dashboardKpis(); as kpis) {
+        <article class="kpi-card"><p>TOTAL DE AVISTAMENTOS ANUAL</p><strong>{{ formatNumber(kpis.totalAnnualSightings) }}</strong><span>avistamentos registrados em {{ kpis.year }}</span></article>
+        <article class="kpi-card"><p>AVISTAMENTOS EM RELAÇÃO AO ANO PASSADO</p><strong>{{ formatPercentage(kpis.sightingsComparedToPreviousYear.percentage, true) }} <em>{{ formatDifference(kpis.sightingsComparedToPreviousYear.difference) }}</em></strong><span>{{ formatNumber(kpis.sightingsComparedToPreviousYear.current) }} vs. {{ formatNumber(kpis.sightingsComparedToPreviousYear.previous) }} no mesmo período</span></article>
+        <article class="kpi-card"><p>AVISTAMENTOS EM ÁREAS AFETADAS</p><strong>{{ formatPercentage(kpis.sightingsInAffectedAreas.percentage) }}</strong><span>{{ formatNumber(kpis.sightingsInAffectedAreas.count) }} em áreas com desmatamento ou queimadas</span></article>
+        <article class="kpi-card"><p>AVISTAMENTOS FORA DO HABITAT</p><strong>{{ formatPercentage(kpis.sightingsOutsideHabitat.percentage) }} <em>{{ formatNumber(kpis.sightingsOutsideHabitat.count) }}</em></strong><span>avistamentos identificados fora do habitat</span></article>
+      } @else {
+        <article class="kpi-card"><p>TOTAL DE AVISTAMENTOS ANUAL</p><strong>—</strong><span>{{ kpiLoadFailed() ? 'indicadores indisponíveis' : 'carregando indicadores' }}</span></article>
+        <article class="kpi-card"><p>AVISTAMENTOS EM RELAÇÃO AO ANO PASSADO</p><strong>—</strong><span>{{ kpiLoadFailed() ? 'indicadores indisponíveis' : 'carregando indicadores' }}</span></article>
+        <article class="kpi-card"><p>AVISTAMENTOS EM ÁREAS AFETADAS</p><strong>—</strong><span>{{ kpiLoadFailed() ? 'indicadores indisponíveis' : 'carregando indicadores' }}</span></article>
+        <article class="kpi-card"><p>AVISTAMENTOS FORA DO HABITAT</p><strong>—</strong><span>{{ kpiLoadFailed() ? 'indicadores indisponíveis' : 'carregando indicadores' }}</span></article>
+      }
+    </div>
+  </div>
+
+  <section class="weather-strip" aria-label="Previsão climática para os próximos três dias">
+    <div class="weather-strip__intro"><span>CONDIÇÕES CLIMÁTICAS</span><small>{{ weatherLocationName() }} · próximos 3 dias</small></div>
+    <div class="weather-strip__days">
+      @if (isLoadingWeatherForecast()) {
+        <p class="weather-strip__loading">Carregando previsão…</p>
+      } @else {
+      @for (weather of weatherForecast(); track weather.date) {
+        <article class="weather-day" [class.weather-day--today]="weather.day === 'Hoje'">
+          <div><strong>{{ weather.day }}</strong><small>{{ weather.date }}</small></div>
+          <span class="weather-day__temperature">{{ weather.temperature }}°</span>
+          <span class="weather-day__wind" aria-label="Vento máximo de {{ weather.windSpeed }} quilômetros por hora">↗ {{ weather.windSpeed }} <small>km/h</small></span>
+          <span class="weather-day__rain" aria-label="{{ weather.condition }}, {{ weather.precipitation }} por cento de chance de chuva"><img [src]="weather.conditionIcon" [alt]="weather.condition"> {{ weather.precipitation }}<small>%</small></span>
+        </article>
+      }
+      }
+    </div>
+  </section>
+
+</section>
