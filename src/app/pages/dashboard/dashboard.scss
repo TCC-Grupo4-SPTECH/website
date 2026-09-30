@@ -183,7 +183,7 @@ h2 {
   display: flex;
   gap: 1rem;
   color: var(--avidata-text-muted);
-  font-size: 0.72rem;
+  font-size: 1rem;
 }
 .map-card__legend span {
   display: flex;
@@ -191,8 +191,8 @@ h2 {
   gap: 0.35rem;
 }
 .legend-dot {
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 0.7rem;
+  height: 0.7rem;
   border-radius: 50%;
   background: #d89d28;
 }
