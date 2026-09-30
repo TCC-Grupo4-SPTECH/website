@@ -17,6 +17,12 @@
   &__link {
     text-decoration: none;
     color: var(--avidata-text);
+    transition: color 160ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--avidata-accent-light);
+    }
   }
 }
 
