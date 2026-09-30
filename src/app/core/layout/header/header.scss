@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   padding: 1.5rem 2rem;
-
+  justify-content: space-between;
   &__logo {
     font-family: var(--avidata-font-display);
     font-size: 1.5rem;
@@ -10,7 +10,10 @@
     color: var(--avidata-text);
     text-decoration: none;
   }
-
+  &__link {
+    text-decoration: none;
+    color: var(--avidata-text);
+  }
 }
 
 @media (max-width: 500px) {

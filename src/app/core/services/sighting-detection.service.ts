@@ -20,7 +20,7 @@ export class SightingDetectionService {
       formData.append(fieldName, file, file.name);
     });
 
-    const response = await fetch('http://44.196.162.170/detectar', {
+    const response = await fetch('/detectar', {
       method: 'POST',
       body: formData,
     });

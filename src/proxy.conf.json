@@ -1,4 +1,9 @@
 {
+  "/detectar": {
+    "target": "http://54.197.151.77:8000",
+    "secure": false,
+    "changeOrigin": true
+  },
   "/dashboard/general/kpi": {
     "target": "http://localhost:3000",
     "secure": false,
