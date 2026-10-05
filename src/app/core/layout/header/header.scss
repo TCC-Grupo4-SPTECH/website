@@ -3,7 +3,7 @@
   align-items: center;
   padding: 1.5rem 2rem;
   justify-content: space-between;
-  background-color: #14251b;
+  background-color: var(--avidata-card-bg);
   border-bottom: 1px solid var(--avidata-input-border);
 
   &__logo {
