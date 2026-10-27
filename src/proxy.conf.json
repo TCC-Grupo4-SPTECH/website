@@ -1,6 +1,6 @@
 {
   "/detectar": {
-    "target": "http://54.197.151.77:8000",
+    "target": "http://54.173.238.102:8000",
     "secure": false,
     "changeOrigin": true
   },
