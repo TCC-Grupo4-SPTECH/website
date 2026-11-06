@@ -17,6 +17,8 @@ export interface DashboardKpis {
     percentage: number;
   };
   totalAnnualSightings: number;
+  deforestationGrowth?: { percentage: number; mocked: boolean };
+  fireTrend?: { trend: 'start' | 'increase'; mocked: boolean };
 }
 
 interface DashboardKpiResponse {

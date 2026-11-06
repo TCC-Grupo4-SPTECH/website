@@ -1,4 +1,9 @@
 {
+  "/dashboard/general/history": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
   "/dashboard/general/kpi": {
     "target": "http://localhost:3000",
     "secure": false,
@@ -14,7 +19,7 @@
     "secure": false,
     "changeOrigin": true
   },
-  "/dashboard/map": {
+  "/dashboard/map/deforestation": {
     "target": "http://localhost:3000",
     "secure": false,
     "changeOrigin": true

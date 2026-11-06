@@ -63,6 +63,17 @@
         <article class="kpi-card"><p>AVISTAMENTOS EM ÁREAS AFETADAS</p><strong>—</strong><span>{{ kpiLoadFailed() ? 'indicadores indisponíveis' : 'carregando indicadores' }}</span></article>
         <article class="kpi-card"><p>AVISTAMENTOS FORA DO HABITAT</p><strong>—</strong><span>{{ kpiLoadFailed() ? 'indicadores indisponíveis' : 'carregando indicadores' }}</span></article>
       }
+      @let environmental = environmentalKpis();
+      <article class="kpi-card">
+        <p>CRESCIMENTO DO DESMATAMENTO</p>
+        <strong>{{ formatPercentage(environmental.deforestationGrowth.percentage, true) }}</strong>
+        <span>em relação ao ano anterior @if (environmental.deforestationGrowth.mocked) { · Dados simulados }</span>
+      </article>
+      <article class="kpi-card">
+        <p>TENDÊNCIA DE QUEIMADAS</p>
+        <strong class="kpi-card__trend">{{ environmental.fireTrend.trend === 'increase' ? 'Em aumento' : 'Início' }}</strong>
+        <span>nos territórios monitorados @if (environmental.fireTrend.mocked) { · Dados simulados }</span>
+      </article>
     </div>
   </div>
 
@@ -84,4 +95,25 @@
     </div>
   </section>
 
+  <article class="chart-card" aria-labelledby="history-title">
+    <div class="card-heading">
+      <div>
+        <p class="card-heading__label">HISTÓRICO MENSAL</p>
+        <h2 id="history-title">Avistamentos de arara-azul</h2>
+      </div>
+    </div>
+    <p class="chart-card__status" role="status">
+      @if (isLoadingHistory()) {
+        Carregando histórico…
+      } @else if (historyLoadFailed()) {
+        Não foi possível carregar o histórico.
+        <button type="button" (click)="loadHistory()">Tentar novamente</button>
+      } @else {
+        Comparativo mês a mês · Acasalamento de julho a dezembro
+      }
+    </p>
+    <div class="history-chart" [attr.aria-busy]="isLoadingHistory()">
+      <canvas #chartCanvas role="img" aria-label="Avistamentos mensais: ano atual, ano passado e média histórica. Época de acasalamento de julho a dezembro."></canvas>
+    </div>
+  </article>
 </section>

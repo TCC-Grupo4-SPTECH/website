@@ -12,7 +12,7 @@ export type SightingFeatureCollection = GeoJSON.FeatureCollection<GeoJSON.Geomet
 /** Contract for the GeoJSON endpoint used by the map. */
 @Injectable({ providedIn: 'root' })
 export class SightingGeoJsonService {
-  private readonly geoJsonUrl = '/dashboard/map?layer=deforestation';
+  private readonly geoJsonUrl = '/dashboard/map/deforestation';
 
   getSightingsGeoJson(): Promise<SightingFeatureCollection> {
     return new Promise((resolve, reject) => {
