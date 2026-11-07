@@ -2,6 +2,9 @@
   display: flex;
   align-items: center;
   padding: 1.5rem 2rem;
+  justify-content: space-between;
+  background-color: var(--avidata-card-bg);
+  border-bottom: 1px solid var(--avidata-input-border);
 
   &__logo {
     font-family: var(--avidata-font-display);
@@ -11,6 +14,16 @@
     text-decoration: none;
   }
 
+  &__link {
+    text-decoration: none;
+    color: var(--avidata-text);
+    transition: color 160ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--avidata-accent-light);
+    }
+  }
 }
 
 @media (max-width: 500px) {

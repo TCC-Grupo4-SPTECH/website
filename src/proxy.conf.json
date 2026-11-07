@@ -1,6 +1,6 @@
 {
-  "/dashboard/general/history": {
-    "target": "http://localhost:3000",
+  "/detectar": {
+    "target": "http://54.173.238.102:8000",
     "secure": false,
     "changeOrigin": true
   },
@@ -15,6 +15,11 @@
     "changeOrigin": true
   },
   "/dashboard/map/macaw": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/dashboard/general/history": {
     "target": "http://localhost:3000",
     "secure": false,
     "changeOrigin": true
