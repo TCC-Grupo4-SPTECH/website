@@ -1,0 +1,36 @@
+<main class="camera-list" aria-labelledby="camera-list-title">
+  <header class="page-heading">
+    <p class="page-heading__eyebrow">MONITORAMENTO</p>
+    <h1 id="camera-list-title">Avistamentos gerais</h1>
+    <p class="page-heading__intro">
+      Escolha uma câmera para explorar os registros de araras-azuis por data.
+    </p>
+  </header>
+
+  @if (!isLoading() && !loadFailed()) {
+    <section class="camera-summary" aria-label="Resumo das câmeras">
+      <div>
+        <strong>{{ cameras().length }}</strong>
+        <span>{{ cameras().length === 1 ? 'câmera disponível' : 'câmeras disponíveis' }}</span>
+      </div>
+      <span class="camera-summary__note"><i aria-hidden="true"></i> Lista atualizada pela API</span>
+    </section>
+  }
+
+  <section class="camera-list__grid" aria-label="Câmeras disponíveis">
+    @if (isLoading()) {
+      <p class="camera-list__status" role="status">Carregando câmeras disponíveis…</p>
+    } @else if (loadFailed()) {
+      <div class="camera-list__status camera-list__status--error" role="alert">
+        <p>Não foi possível carregar as câmeras.</p>
+        <button type="button" (click)="loadCameras()">Tentar novamente</button>
+      </div>
+    } @else if (cameras().length === 0) {
+      <p class="camera-list__status">Nenhuma câmera disponível no momento.</p>
+    } @else {
+      @for (camera of cameras(); track camera) {
+        <app-camera-card [camera]="camera" />
+      }
+    }
+  </section>
+</main>

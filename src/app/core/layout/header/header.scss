@@ -1,8 +1,9 @@
 .app-header {
   display: flex;
   align-items: center;
-  padding: 1.5rem 2rem;
   justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
   background-color: var(--avidata-card-bg);
   border-bottom: 1px solid var(--avidata-input-border);
 
@@ -12,6 +13,12 @@
     letter-spacing: 0.08em;
     color: var(--avidata-text);
     text-decoration: none;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   &__link {
@@ -24,8 +31,32 @@
       color: var(--avidata-accent-light);
     }
   }
+
+  &__link--primary {
+    padding: 0.65rem 1rem;
+    color: var(--avidata-accent-contrast);
+    background: var(--avidata-accent);
+    border-radius: 0.35rem;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--avidata-accent-contrast);
+      background: var(--avidata-accent-light);
+    }
+  }
 }
 
 @media (max-width: 500px) {
-  .app-header { padding: 1.25rem 1rem; }
+  .app-header {
+    padding: 1rem;
+
+    &__nav {
+      gap: 0.8rem;
+      font-size: 0.83rem;
+    }
+
+    &__link--primary {
+      padding: 0.55rem 0.65rem;
+    }
+  }
 }

@@ -1,0 +1,110 @@
+:host {
+  display: block;
+}
+
+.camera-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.1rem;
+  min-height: 9.5rem;
+  padding: 1.4rem;
+  color: var(--avidata-text);
+  text-decoration: none;
+  background:
+    radial-gradient(ellipse at 100% 0, rgb(200 137 12 / 9%), transparent 55%),
+    var(--avidata-card-bg);
+  border: 1px solid #293d2e;
+  border-radius: 0.75rem;
+  transition: border-color 160ms ease, transform 160ms ease, background-color 160ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--avidata-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--avidata-accent-light);
+    outline-offset: 3px;
+  }
+
+  &__icon {
+    display: grid;
+    width: 3.4rem;
+    height: 3.4rem;
+    place-items: center;
+    color: var(--avidata-accent-light);
+    background: #2b2718;
+    border: 1px solid #4a3c1b;
+    border-radius: 0.65rem;
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  &__content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  &__eyebrow {
+    color: var(--avidata-accent-light);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    overflow: hidden;
+    font-family: var(--avidata-font-display);
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__region,
+  &__meta {
+    color: var(--avidata-text-muted);
+    font-size: 0.75rem;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.4rem;
+  }
+
+  &__arrow {
+    color: var(--avidata-accent-light);
+    font-size: 1.4rem;
+    transition: transform 160ms ease;
+  }
+
+  &:hover &__arrow {
+    transform: translateX(3px);
+  }
+}
+
+@media (max-width: 480px) {
+  .camera-card {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.85rem;
+    padding: 1rem;
+
+    &__icon {
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+
+    &__arrow {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<a class="camera-card" [routerLink]="['/avistamentos', camera()]">
+  <span class="camera-card__icon" aria-hidden="true">
+    <svg viewBox="0 0 48 48" fill="none">
+      <path d="M8 16.5A3.5 3.5 0 0 1 11.5 13h5l2.2-3h10.6l2.2 3h5a3.5 3.5 0 0 1 3.5 3.5v19a3.5 3.5 0 0 1-3.5 3.5h-25A3.5 3.5 0 0 1 8 35.5v-19Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+      <circle cx="24" cy="25" r="8" stroke="currentColor" stroke-width="2" />
+      <circle cx="24" cy="25" r="3" fill="currentColor" />
+      <path d="M34 18h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+    </svg>
+  </span>
+  <span class="camera-card__content">
+    <span class="camera-card__eyebrow">CÂMERA</span>
+    <strong>{{ camera() }}</strong>
+    <span class="camera-card__region">Ver avistamentos desta câmera</span>
+  </span>
+  <span class="camera-card__arrow" aria-hidden="true">→</span>
+</a>

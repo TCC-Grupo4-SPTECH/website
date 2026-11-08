@@ -1,0 +1,326 @@
+.sightings-page {
+  width: min(100% - 3rem, 1000px);
+  margin: 0 auto;
+  padding: 2.5rem 0 5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1.7rem;
+  color: var(--avidata-text-muted);
+  font-size: 0.82rem;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--avidata-accent-light);
+  }
+}
+
+.page-heading {
+  margin-bottom: 1.7rem;
+
+  &__eyebrow {
+    margin: 0 0 0.65rem;
+    color: var(--avidata-accent-light);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--avidata-text);
+    font-family: var(--avidata-font-display);
+    font-size: clamp(1.9rem, 5vw, 2.7rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+
+  &__intro {
+    margin: 0.55rem 0 0;
+    color: var(--avidata-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+}
+
+.sightings-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  padding: 0.9rem 1.1rem;
+  background: #0c1710;
+  border: 1px solid #203228;
+  border-radius: 0.55rem;
+
+  > div {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+
+  strong {
+    color: var(--avidata-text);
+    font-family: var(--avidata-font-display);
+    font-size: 1.2rem;
+  }
+
+  span {
+    color: var(--avidata-text-muted);
+    font-size: 0.75rem;
+  }
+
+  &__note {
+    color: #a9bd8f !important;
+  }
+}
+
+.date-groups {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.date-group {
+  overflow: hidden;
+  background: #0c1710;
+  border: 1px solid #293d2e;
+  border-radius: 0.65rem;
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    min-height: 4.4rem;
+    padding: 0.85rem 1.1rem;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &__calendar {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    place-items: center;
+    color: var(--avidata-accent-light);
+    background: #2b2718;
+    border-radius: 0.45rem;
+
+    svg {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+  }
+
+  &__date {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    strong {
+      overflow: hidden;
+      color: var(--avidata-text);
+      font-family: var(--avidata-font-display);
+      font-size: 0.98rem;
+      font-weight: 500;
+      text-overflow: ellipsis;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    small {
+      color: var(--avidata-text-muted);
+      font-size: 0.7rem;
+    }
+  }
+
+  &__toggle {
+    margin-left: auto;
+    color: var(--avidata-text-muted);
+    font-size: 1.3rem;
+    transition: transform 160ms ease;
+  }
+
+  &[open] &__toggle {
+    transform: rotate(180deg);
+  }
+
+  &__records {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0 1rem 1rem;
+  }
+}
+
+.sighting-record {
+  overflow: hidden;
+  background: #101e15;
+  border: 1px solid #26382b;
+  border-radius: 0.5rem;
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.4rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &__id {
+    color: #e7e4d7;
+    font-family: Consolas, monospace;
+    font-size: 0.77rem;
+    font-weight: 600;
+  }
+
+  &__meta {
+    margin-left: auto;
+    color: var(--avidata-text-muted);
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  &__toggle {
+    width: 1.4rem;
+    color: var(--avidata-accent-light);
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  &[open] &__toggle {
+    font-size: 0;
+
+    &::before {
+      content: '−';
+      font-size: 1.2rem;
+    }
+  }
+
+  &__images {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding: 0 1rem 1rem;
+  }
+}
+
+.sighting-image {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  background: #0a130d;
+  border: 1px solid #2e4132;
+  border-radius: 0.4rem;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.55rem 0.65rem;
+    color: var(--avidata-text-muted);
+    font-size: 0.67rem;
+  }
+}
+
+.empty-state {
+  display: flex;
+  min-height: 18rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: #0c1710;
+  border: 1px solid #203228;
+  border-radius: 0.65rem;
+
+  > span {
+    color: var(--avidata-accent);
+    font-size: 2rem;
+  }
+
+  h1,
+  h2 {
+    margin: 0.8rem 0 0.35rem;
+    color: var(--avidata-text);
+    font-family: var(--avidata-font-display);
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  p {
+    margin: 0;
+    color: var(--avidata-text-muted);
+    font-size: 0.85rem;
+  }
+
+  a {
+    margin-top: 1rem;
+    color: var(--avidata-accent-light);
+  }
+}
+
+@media (max-width: 650px) {
+  .sightings-page {
+    width: min(100% - 2rem, 1000px);
+    padding-top: 1.75rem;
+  }
+
+  .sighting-record__images {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sighting-image img {
+    height: 125px;
+  }
+}
+
+@media (max-width: 420px) {
+  .sightings-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sighting-record__heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+  }
+
+  .sighting-record__meta {
+    margin-left: 0;
+  }
+
+  .sighting-record__toggle {
+    margin-left: auto;
+  }
+
+  .sighting-record__images {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,151 @@
+.camera-list {
+  width: min(100% - 3rem, 1180px);
+  margin: 0 auto;
+  padding: 3.5rem 0 5rem;
+}
+
+.page-heading {
+  margin-bottom: 2rem;
+
+  &__eyebrow {
+    margin: 0 0 0.7rem;
+    color: var(--avidata-accent-light);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--avidata-text);
+    font-family: var(--avidata-font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+
+  &__intro {
+    max-width: 38rem;
+    margin: 0.7rem 0 0;
+    color: var(--avidata-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+.camera-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #0c1710;
+  border: 1px solid #203228;
+  border-radius: 0.6rem;
+
+  > div {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  strong {
+    color: var(--avidata-text);
+    font-family: var(--avidata-font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  span {
+    color: var(--avidata-text-muted);
+    font-size: 0.75rem;
+  }
+
+  &__divider {
+    width: 1px;
+    height: 1.6rem;
+    background: #304234;
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: auto;
+
+    i {
+      width: 0.45rem;
+      height: 0.45rem;
+      background: #8fa66e;
+      border-radius: 50%;
+    }
+  }
+}
+
+.camera-list__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.camera-list__status {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 1.5rem;
+  color: var(--avidata-text-muted);
+  text-align: center;
+  background: #0c1710;
+  border: 1px solid #203228;
+  border-radius: 0.6rem;
+
+  &--error {
+    color: #f0c5b7;
+
+    p {
+      margin: 0 0 0.75rem;
+    }
+
+    button {
+      padding: 0.55rem 0.9rem;
+      color: var(--avidata-accent-contrast);
+      background: var(--avidata-accent);
+      border: 0;
+      border-radius: 0.35rem;
+      cursor: pointer;
+
+      &:hover,
+      &:focus-visible {
+        background: var(--avidata-accent-light);
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .camera-list {
+    width: min(100% - 2rem, 1180px);
+    padding-top: 2.5rem;
+  }
+
+  .camera-list__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-summary {
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+
+    &__note {
+      width: 100%;
+      margin: 0.2rem 0 0;
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  .camera-summary > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}
