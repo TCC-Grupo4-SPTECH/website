@@ -14,6 +14,11 @@
     "secure": false,
     "changeOrigin": true
   },
+  "/listagem-imagens": {
+    "target": "http://54.173.238.102:8000",
+    "secure": false,
+    "changeOrigin": true
+  },
   "/dashboard/general/kpi": {
     "target": "http://localhost:3000",
     "secure": false,

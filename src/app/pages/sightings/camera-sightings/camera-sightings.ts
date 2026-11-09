@@ -2,6 +2,12 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CameraSightingsByDate, SightingService } from '../../../core/services/sighting.service';
 
+interface SightingImagesState {
+  expanded: boolean;
+  status: 'loading' | 'loaded' | 'error';
+  urls: string[];
+}
+
 @Component({
   selector: 'app-camera-sightings',
   imports: [RouterLink],
@@ -13,7 +19,7 @@ export class CameraSightings implements OnInit {
   private readonly sightingService = inject(SightingService);
   protected readonly cameraId = this.route.snapshot.paramMap.get('cameraId');
   protected readonly dates = signal<CameraSightingsByDate[]>([]);
-  protected readonly selectedSightings = signal<string[]>([]);
+  protected readonly sightingImages = signal<Record<string, SightingImagesState>>({});
   protected readonly isLoading = signal(true);
   protected readonly loadFailed = signal(false);
 
@@ -30,7 +36,7 @@ export class CameraSightings implements OnInit {
 
     this.isLoading.set(true);
     this.loadFailed.set(false);
-    this.selectedSightings.set([]);
+    this.sightingImages.set({});
 
     try {
       this.dates.set(await this.sightingService.getCameraDates(this.cameraId));
@@ -56,17 +62,46 @@ export class CameraSightings implements OnInit {
     }).format(parsedDate);
   }
 
-  protected isSelected(date: string, sightingId: string): boolean {
-    return this.selectedSightings().includes(this.getSelectionKey(date, sightingId));
+  protected getImagesState(date: string, sightingId: string): SightingImagesState | undefined {
+    return this.sightingImages()[this.getSelectionKey(date, sightingId)];
   }
 
-  protected toggleSighting(date: string, sightingId: string, event: Event): void {
+  protected toggleSighting(date: string, sightingId: string): void {
     const key = this.getSelectionKey(date, sightingId);
-    const isChecked = (event.target as HTMLInputElement).checked;
+    const current = this.sightingImages()[key];
 
-    this.selectedSightings.update((selected) =>
-      isChecked ? [...selected, key] : selected.filter((item) => item !== key),
-    );
+    if (current?.expanded) {
+      this.updateImagesState(key, { ...current, expanded: false });
+      return;
+    }
+
+    if (current?.status === 'loaded' || current?.status === 'loading') {
+      this.updateImagesState(key, { ...current, expanded: true });
+      return;
+    }
+
+    void this.loadSightingImages(date, sightingId);
+  }
+
+  protected async loadSightingImages(date: string, sightingId: string): Promise<void> {
+    if (!this.cameraId) return;
+
+    const key = this.getSelectionKey(date, sightingId);
+    this.updateImagesState(key, { expanded: true, status: 'loading', urls: [] });
+
+    try {
+      const urls = await this.sightingService.getSightingImages(this.cameraId, date, sightingId);
+      const expanded = this.sightingImages()[key]?.expanded ?? true;
+      this.updateImagesState(key, { expanded, status: 'loaded', urls });
+    } catch (error) {
+      console.error(`Could not load images for sighting "${sightingId}".`, error);
+      const expanded = this.sightingImages()[key]?.expanded ?? true;
+      this.updateImagesState(key, { expanded, status: 'error', urls: [] });
+    }
+  }
+
+  private updateImagesState(key: string, state: SightingImagesState): void {
+    this.sightingImages.update((current) => ({ ...current, [key]: state }));
   }
 
   private getSelectionKey(date: string, sightingId: string): string {

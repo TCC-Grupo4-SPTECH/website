@@ -15,9 +15,25 @@ interface CameraDatesResponse {
   datas: CameraSightingsByDate[];
 }
 
+interface SightingImagesResponse {
+  urls: string[];
+}
+
+const MAX_CACHED_SIGHTINGS = 100;
+
 export interface CameraSightingsByDate {
   data: string;
   avistamentos: string[];
+}
+
+function isSightingImagesResponse(payload: unknown): payload is SightingImagesResponse {
+  return (
+    typeof payload === 'object'
+    && payload !== null
+    && 'urls' in payload
+    && Array.isArray(payload.urls)
+    && payload.urls.every((url: unknown) => typeof url === 'string' && url.trim().length > 0)
+  );
 }
 
 function isCameraListResponse(payload: unknown): payload is CameraListResponse {
@@ -54,6 +70,9 @@ function isCameraDatesResponse(payload: unknown): payload is CameraDatesResponse
 
 @Injectable({ providedIn: 'root' })
 export class SightingService {
+  private readonly sightingImagesCache = new Map<string, string[]>();
+  private readonly sightingImagesRequests = new Map<string, Promise<string[]>>();
+
   async getCameras(): Promise<string[]> {
     const response = await fetch('/listagem-cameras');
     if (!response.ok) {
@@ -83,6 +102,49 @@ export class SightingService {
       data: entry.data.trim(),
       avistamentos: entry.avistamentos.map((sightingId) => sightingId.trim()),
     }));
+  }
+
+  async getSightingImages(cameraId: string, date: string, sightingId: string): Promise<string[]> {
+    const cacheKey = JSON.stringify([cameraId, date, sightingId]);
+    const cachedUrls = this.sightingImagesCache.get(cacheKey);
+    if (cachedUrls) {
+      this.sightingImagesCache.delete(cacheKey);
+      this.sightingImagesCache.set(cacheKey, cachedUrls);
+      return [...cachedUrls];
+    }
+
+    const pendingRequest = this.sightingImagesRequests.get(cacheKey);
+    if (pendingRequest) return [...(await pendingRequest)];
+
+    const request = this.fetchSightingImages(cameraId, date, sightingId);
+    this.sightingImagesRequests.set(cacheKey, request);
+
+    try {
+      const urls = await request;
+      if (this.sightingImagesCache.size >= MAX_CACHED_SIGHTINGS) {
+        const oldestEntry = this.sightingImagesCache.keys().next();
+        if (!oldestEntry.done) this.sightingImagesCache.delete(oldestEntry.value);
+      }
+      this.sightingImagesCache.set(cacheKey, urls);
+      return [...urls];
+    } finally {
+      this.sightingImagesRequests.delete(cacheKey);
+    }
+  }
+
+  private async fetchSightingImages(cameraId: string, date: string, sightingId: string): Promise<string[]> {
+    const path = [cameraId, date, sightingId].map((segment) => encodeURIComponent(segment)).join('/');
+    const response = await fetch(`/listagem-imagens/${path}`);
+    if (!response.ok) {
+      throw new Error(`Could not load images for sighting "${sightingId}" (${response.status})`);
+    }
+
+    const payload: unknown = await response.json();
+    if (!isSightingImagesResponse(payload)) {
+      throw new Error('Invalid sighting images response');
+    }
+
+    return payload.urls.map((url) => url.trim());
   }
 
   /** Mock stand-in for the real "save sighting" API. */

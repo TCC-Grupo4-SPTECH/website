@@ -16,13 +16,7 @@
           <strong>{{ dates().length }}</strong>
           <span>{{ dates().length === 1 ? 'data com registros' : 'datas com registros' }}</span>
         </div>
-        <div class="sightings-summary__details">
-          <span>
-            {{ selectedSightings().length }}
-            {{ selectedSightings().length === 1 ? 'avistamento selecionado' : 'avistamentos selecionados' }}
-          </span>
-          <span class="sightings-summary__note">Lista atualizada pela API</span>
-        </div>
+        <span class="sightings-summary__note">Lista atualizada pela API</span>
       </section>
     }
 
@@ -41,7 +35,7 @@
           <p>Esta câmera ainda não possui datas com avistamentos.</p>
         </div>
       } @else {
-        @for (dateGroup of dates(); track dateGroup.data) {
+        @for (dateGroup of dates(); track dateGroup.data; let dateIndex = $index) {
           <details class="date-card">
             <summary class="date-card__heading">
               <span class="date-card__calendar" aria-hidden="true">
@@ -57,18 +51,54 @@
               <span class="date-card__toggle" aria-hidden="true">⌄</span>
             </summary>
             <div class="date-card__sightings">
-              <p>Selecione os avistamentos que deseja consultar:</p>
-              @for (sightingId of dateGroup.avistamentos; track sightingId) {
-                <label class="sighting-option">
-                  <input
-                    type="checkbox"
-                    [checked]="isSelected(dateGroup.data, sightingId)"
-                    (change)="toggleSighting(dateGroup.data, sightingId, $event)"
-                  />
-                  <span>{{ sightingId }}</span>
-                </label>
+              <p>Avistamentos desta data:</p>
+              @for (sightingId of dateGroup.avistamentos; track sightingId; let sightingIndex = $index) {
+                @let imagesState = getImagesState(dateGroup.data, sightingId);
+                <section class="sighting-dropdown">
+                  <button
+                    class="sighting-dropdown__trigger"
+                    type="button"
+                    [attr.aria-expanded]="imagesState?.expanded ?? false"
+                    [attr.aria-controls]="'images-' + dateIndex + '-' + sightingIndex"
+                    (click)="toggleSighting(dateGroup.data, sightingId)"
+                  >
+                    <span class="sighting-dropdown__id">{{ sightingId }}</span>
+                    <span class="sighting-dropdown__meta">
+                      @if (imagesState?.status === 'loaded') {
+                        {{ imagesState?.urls?.length }} imagens
+                      } @else {
+                        Ver imagens
+                      }
+                    </span>
+                    <span class="sighting-dropdown__toggle" aria-hidden="true">⌄</span>
+                  </button>
+                  <div
+                    class="sighting-dropdown__content"
+                    [hidden]="!imagesState?.expanded"
+                    [id]="'images-' + dateIndex + '-' + sightingIndex"
+                  >
+                    @if (imagesState?.status === 'loading') {
+                      <p class="sighting-dropdown__status" role="status">Carregando imagens…</p>
+                    } @else if (imagesState?.status === 'error') {
+                      <div class="sighting-dropdown__error" role="alert">
+                        <span>Não foi possível carregar as imagens.</span>
+                        <button type="button" (click)="loadSightingImages(dateGroup.data, sightingId)">
+                          Tentar novamente
+                        </button>
+                      </div>
+                    } @else if (imagesState?.status === 'loaded' && imagesState.urls.length === 0) {
+                      <p class="sighting-dropdown__status">Nenhuma imagem encontrada para este avistamento.</p>
+                    } @else if (imagesState?.status === 'loaded') {
+                      <div class="sighting-images">
+                        @for (url of imagesState.urls; track $index; let imageIndex = $index) {
+                          <img [src]="url" [alt]="'Imagem ' + (imageIndex + 1) + ' do avistamento ' + sightingId" />
+                        }
+                      </div>
+                    }
+                  </div>
+                </section>
               } @empty {
-                <p class="sighting-option__empty">Nenhum avistamento nesta data.</p>
+                <p class="date-card__empty">Nenhum avistamento nesta data.</p>
               }
             </div>
           </details>
