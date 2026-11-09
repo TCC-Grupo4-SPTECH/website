@@ -87,7 +87,9 @@
                         </button>
                       </div>
                     } @else if (imagesState?.status === 'loaded' && imagesState.urls.length === 0) {
-                      <p class="sighting-dropdown__status">Nenhuma imagem encontrada para este avistamento.</p>
+                      <p class="sighting-dropdown__status">
+                        Houve a detecção de pássaro(s), mas nenhum foi classificado como arara-azul pelo sistema.
+                      </p>
                     } @else if (imagesState?.status === 'loaded') {
                       <div class="sighting-images">
                         @for (url of imagesState.urls; track $index; let imageIndex = $index) {
